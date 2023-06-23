@@ -1,51 +1,55 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { getUserById, updateUser, deleteUser, isMyData } = require('../services/userService');
-const { isLoggedIn } = require('../services/authService');
+const {
+  getUserById,
+  updateUser,
+  deleteUser,
+} = require("../../controller/userService");
+const { isLoggedIn } = require("../middleware/auth");
+const { isMyData } = require("../middleware/user");
 
 module.exports = (app) => {
-    app.use('/user', isLoggedIn, router);
+  app.use("/user", isLoggedIn, router);
 
-    router.get('/:id', async (req, res) => {
-        try {
-            const { id } = req.params;
-            const user = await getUserById(id);
+  router.get("/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const user = await getUserById(id);
 
-            if (!user) return res.status(404).send('user not found');
+      if (!user) return res.status(404).send("user not found");
 
-            res.status(200).send(user);
+      res.status(200).send(user);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  });
 
-        } catch (error) {
-            res.status(500).send(error.message)
-        }
-    });
+  router.put("/:id", isMyData, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const data = req.body;
 
-    router.put('/:id', isMyData, async (req, res) => {
-        try {
-            const { id } = req.params;
-            const data = req.body;
+      const user = await getUserById(id);
+      if (!user) return res.status(404).send("user not found");
 
-            const user = await getUserById(id);
-            if (!user) return res.status(404).send('user not found');
+      const response = await updateUser(id, data);
+      res.send(response);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  });
 
-            const response = await updateUser(id, data);
-            res.send(response);
-        } catch (error) {
-            res.status(500).send(error.message);
-        }
-    });
+  router.delete("/:id", isMyData, async (req, res) => {
+    try {
+      const { id } = req.params;
 
-    router.delete('/:id', isMyData, async (req, res) => {
-        try {
-            const { id } = req.params;
+      const user = await getUserById(id);
+      if (!user) return res.status(404).send("user not found");
 
-            const user = await getUserById(id);
-            if (!user) return res.status(404).send('user not found');
-
-            await deleteUser(id);
-            res.status(204).send('Successfully deleted user');
-        } catch (error) {
-            res.status(500).send(error.message);
-        }
-    })
-}
+      await deleteUser(id);
+      res.status(204).send("Successfully deleted user");
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  });
+};
