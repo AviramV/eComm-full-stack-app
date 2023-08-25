@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -11,6 +13,10 @@ const Register = () => {
         <input type="password" placeholder="Password" required />
         <button type="submit">Register</button>
       </form>
+      <p>
+        Already have an account?
+        <Link to="/login"> Login</Link>
+      </p>
     </>
   );
 };
