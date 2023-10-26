@@ -3,10 +3,11 @@ const { passwordHash } = require("../model/utils");
 
 module.exports = {
   // Get user from database by username
-  async getUser(username) {
-    const user = await db.query("SELECT * FROM users WHERE user_name = $1", [
-      username,
-    ]);
+  async getUser(username, email) {
+    const user = await db.query(
+      "SELECT * FROM users WHERE username = $1 OR email = $2",
+      [username, email]
+    );
     return user.rows[0];
   },
 

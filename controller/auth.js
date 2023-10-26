@@ -1,15 +1,15 @@
 const db = require("../model/db");
 const { passwordHash } = require("../model/utils");
 
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
   const { email, username, password } = req.body;
   try {
     const hashedPassword = await passwordHash(password.toString(), 10);
     const dbRes = await db.query(
-      `insert into users(email, user_name, password) values ($1, $2, $3) RETURNING user_name`,
+      `insert into users(email, username, password) values ($1, $2, $3) RETURNING username`,
       [email, username, hashedPassword]
     );
-    res.status(201).send(`Successfully registered ${dbRes.rows[0].user_name}`);
+    next();
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal error");

@@ -3,22 +3,38 @@ const router = express.Router();
 const db = require("../db");
 const { isLoggedIn, checkUserExists } = require("../middleware/auth");
 const { register } = require("../../controller/auth");
+const { passport } = require("passport");
 
 module.exports = (app, passport) => {
   app.use(router);
 
-  router.post("/register", checkUserExists, register);
+  router.post(
+    "/register",
+    checkUserExists,
+    register,
+    passport.authenticate("local"),
+    (req, res) => {
+      const { username } = req.user;
+      res
+        .status(201)
+        .send({ message: "Successfully registered", user: username });
+    }
+  );
 
   router.get("/login", (req, res) => {
-    if (!req.user) return res.status(404).send("not logged in");
-    res.send(`Hello ${req.user.username}`);
+    if (req.isUnauthenticated())
+      return res.status(401).send({ message: "not logged in" });
+    res.send(req.user);
   });
 
   router.post(
     "/login",
-    passport.authenticate("local", { failureMessage: true }),
+    passport.authenticate("local", {
+      failureMessage: "Incorrect username or password.",
+    }),
     (req, res) => {
-      res.send(`Logged in as ${req.body.username}`);
+      const { username, id } = req.user;
+      res.status(200).send({ username, id });
     }
   );
 

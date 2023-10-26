@@ -13,7 +13,7 @@ module.exports = (app) => {
   app.use(
     session({
       secret,
-      cookie: { maxAge: 1000 * 60 * 60 * 24, secure: false, sameSite: "none" },
+      cookie: { maxAge: 1000 * 60 * 60 * 24, secure: false, sameSite: "Lax" },
       resave: false,
       saveUninitialized: false,
     })
