@@ -1,0 +1,45 @@
+main {
+  display: grid;
+  place-items: center;
+  max-width: fit-content;
+}
+
+.login-buttons-container {
+  display: flex;
+  gap: 1em;
+}
+
+.login-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+span {
+  width: 1em;
+  height: 1em;
+}
+
+.google-logo {
+  background: url("../../assets/google-logo.svg") no-repeat;
+}
+
+.facebook-logo {
+  background: url("../../assets/facebook-logo.svg") no-repeat;
+}
+
+.separator {
+  font-weight: 200;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 1em;
+  margin: 1.5em 0;
+}
+
+.separator::after,
+.separator::before {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #919191;
+}

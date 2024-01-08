@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getFormData, sendFormData } from "../Utils/formUtils";
-import { CurrentUserContext } from "../Contexts";
+import { getFormData, sendFormData } from "../../Utils/formUtils";
+import { CurrentUserContext } from "../../Contexts";
+import "./Login.css";
 
 const Login = () => {
   const [message, setMessage] = useState("");
@@ -26,7 +27,7 @@ const Login = () => {
   };
 
   return (
-    <>
+    <main>
       <form onSubmit={handleSubmit}>
         <input
           autoFocus
@@ -50,7 +51,19 @@ const Login = () => {
 
         {message && <p style={{ color: "red" }}>{message}</p>}
       </form>
-    </>
+      <section className="third-party-login">
+        <div class="separator">or</div>
+        <div className="login-buttons-container">
+          <button id="google-login-button" class="button login-button">
+            <span class="google-logo"></span>Continue with Google
+          </button>
+          <button id="facebook-login-button" class="button login-button">
+            <span class="facebook-logo"></span>
+            Continue with Facebook
+          </button>
+        </div>
+      </section>
+    </main>
   );
 };
 

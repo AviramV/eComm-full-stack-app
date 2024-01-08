@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import App from "../App";
 import Register from "../components/Register";
-import Login from "../components/Login";
+import Login from "../components/Login/Login";
 import Cart from "../containers/Cart";
 import Orders from "../containers/Orders";
 import Products from "../containers/Products";
