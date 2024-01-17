@@ -1,13 +1,13 @@
 import { useContext, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getFormData, sendFormData } from "../../Utils/formUtils";
 import { CurrentUserContext } from "../../Contexts";
+import { OAuthButton } from "../OAuthButton";
 import "./Login.css";
 
 const Login = () => {
   const [message, setMessage] = useState("");
   const location = useLocation();
-  const navigate = useNavigate();
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
   const handleSubmit = async (e) => {
@@ -19,7 +19,6 @@ const Login = () => {
       if (!response.ok) return setMessage("Incorrect username or password");
       const user = await response.json();
       setCurrentUser(user);
-      // navigate(-1);
     } catch (error) {
       console.log(error.message);
       setMessage("Something went wrong, please try again later");
@@ -52,15 +51,10 @@ const Login = () => {
         {message && <p style={{ color: "red" }}>{message}</p>}
       </form>
       <section className="third-party-login">
-        <div class="separator">or</div>
+        <div className="separator">or</div>
         <div className="login-buttons-container">
-          <button id="google-login-button" class="button login-button">
-            <span class="google-logo"></span>Continue with Google
-          </button>
-          <button id="facebook-login-button" class="button login-button">
-            <span class="facebook-logo"></span>
-            Continue with Facebook
-          </button>
+          <OAuthButton authProvider="google" authPath="/auth/google" />
+          <OAuthButton authProvider="facebook" authPath="/auth/facebook" />
         </div>
       </section>
     </main>
