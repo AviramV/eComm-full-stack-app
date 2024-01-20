@@ -6,7 +6,7 @@ import { CurrentUserContext } from "./Contexts.js";
 
 function App() {
   const userInfo = useLoaderData();
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(userInfo);
 
   return (
     <>
