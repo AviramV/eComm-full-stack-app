@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+require("dotenv").config();
 const { isLoggedIn, checkUserExists } = require("../middleware/auth");
 const { register } = require("../../controller/auth");
 const { passport } = require("passport");
@@ -44,4 +45,25 @@ module.exports = (app, passport) => {
       res.send(`Logged out successfully`);
     });
   });
+
+  router.get(
+    "/auth/google",
+    passport.authenticate("google", { scope: ["profile", "email"] })
+  );
+
+  router.get(
+    "/auth/google/callback",
+    passport.authenticate("google", {
+      successRedirect: `${process.env.CLIENT_URL}`,
+      failureMessage: "Failed to login with google",
+      failureRedirect: `${process.env.CLIENT_URL}/login`,
+    }),
+    (req, res) => {
+      const { googleId, username, email } = req.user;
+      res.send({
+        message: "Success",
+        user: { googleId, username, email },
+      });
+    }
+  );
 };
