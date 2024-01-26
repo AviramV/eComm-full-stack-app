@@ -66,4 +66,18 @@ module.exports = (app, passport) => {
     //   });
     // }
   );
+
+  router.get(
+    "/auth/facebook",
+    passport.authenticate("facebook", { scope: ["email"] })
+  );
+
+  router.get(
+    "/auth/facebook/callback",
+    passport.authenticate("facebook", {
+      successRedirect: `${process.env.CLIENT_URL}`,
+      failureMessage: "Failed to login with facebook",
+      failureRedirect: `${process.env.CLIENT_URL}/login`,
+    })
+  );
 };
