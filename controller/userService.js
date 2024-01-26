@@ -2,18 +2,44 @@ const db = require("../model/db");
 const { passwordHash } = require("../model/utils");
 
 module.exports = {
-  // Get user from database by username
-  async getUser(username, email) {
+  async createUser(username, email) {
+    const newLocalUser = await db.query(
+      `insert into users(email, username) values ($1, $2) RETURNING id, email, username`,
+      [email, username]
+    );
+    return newLocalUser.rows[0];
+  },
+
+  // Get user from database by username or email
+  async getUser(username) {
     const user = await db.query(
-      "SELECT * FROM users WHERE username = $1 OR email = $2",
-      [username, email]
+      "SELECT * FROM users WHERE username = $1 OR email = $1",
+      [username]
     );
     return user.rows[0];
   },
 
   async getUserById(id) {
-    const user = await db.query("SELECT * FROM users WHERE id = $1", [id]);
+    const user = await db.query(
+      "SELECT id, email, username FROM users WHERE id = $1",
+      [id]
+    );
     return user.rows[0];
+  },
+
+  async getOAuthUser(providerUserId, provider) {
+    const user = await db.query(
+      "SELECT * FROM oauth_credentials WHERE provider_user_id = $1 AND provider = $2",
+      [providerUserId, provider]
+    );
+    return user.rows[0];
+  },
+
+  async addCredentialsForUser(localUserId, provider, providerUserId) {
+    await db.query(
+      `insert into oauth_credentials(user_id, provider, provider_user_id) values ($1, $2, $3)`,
+      [localUserId, provider, providerUserId]
+    );
   },
 
   async updateUser(id, data) {
