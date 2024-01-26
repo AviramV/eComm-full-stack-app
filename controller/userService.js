@@ -11,10 +11,10 @@ module.exports = {
   },
 
   // Get user from database by username or email
-  async getUser(username) {
+  async getUser(usernameOrEmail) {
     const user = await db.query(
       "SELECT * FROM users WHERE username = $1 OR email = $1",
-      [username]
+      [usernameOrEmail]
     );
     return user.rows[0];
   },
