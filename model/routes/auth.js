@@ -58,13 +58,6 @@ module.exports = (app, passport) => {
       failureMessage: "Failed to login with google",
       failureRedirect: `${process.env.CLIENT_URL}/login`,
     })
-    // (req, res) => {
-    //   const { googleId, username, email } = req.user;
-    //   res.send({
-    //     message: "Success",
-    //     user: { googleId, username, email },
-    //   });
-    // }
   );
 
   router.get(
