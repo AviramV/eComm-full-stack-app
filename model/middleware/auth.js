@@ -11,13 +11,13 @@ module.exports = {
   },
 
   async checkUserExists(req, res, next) {
-    const { username, email } = req.body;
+    const { email } = req.body;
     try {
-      const userExists = await getUser(username, email);
+      const userExists = await getUser(email);
       if (userExists)
-        return res
-          .status(409)
-          .send({ message: `Username or email already in use` });
+        return res.status(409).send({
+          message: `An account with this email address already exists`,
+        });
       next();
     } catch (error) {
       console.log(error);
