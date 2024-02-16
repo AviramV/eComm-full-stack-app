@@ -8,10 +8,11 @@ import Register from "../components/Register";
 import Login from "../components/Login/Login";
 import Cart from "../containers/Cart";
 import Orders from "../containers/Orders";
-import Products from "../containers/Products";
+import Products from "../containers/products/Products";
 import Product from "../components/Product";
 import User from "../components/User";
 import ErrorPage from "../ErrorPage";
+import { getProducts } from "./loaders/products";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,7 +27,7 @@ const router = createBrowserRouter(
       }
     >
       <Route errorElement={<ErrorPage />}>
-        <Route index element={<Products />} />
+        <Route index loader={getProducts} element={<Products />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
