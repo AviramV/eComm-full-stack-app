@@ -32,7 +32,13 @@ const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/orders" element={<Orders />} />
-        <Route path="/products/:productId" element={<Product />} />
+        <Route
+          path="/products/:productId"
+          element={<Product />}
+          loader={async ({ params }) =>
+            fetch(`http://127.0.0.1:4001/products/${params.productId}`)
+          }
+        />
         <Route path="/User" element={<User />} />
       </Route>
     </Route>
