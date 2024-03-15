@@ -1,4 +1,5 @@
 import { useLoaderData, useRouteLoaderData } from "react-router-dom";
+import Product from "../../components/Product";
 import "./Products.css";
 
 const Products = () => {
@@ -10,17 +11,7 @@ const Products = () => {
       <main className="products-container">
         {productList.map((product) => (
           <div key={product.id} className="product-card">
-            <img
-              loading="lazy"
-              src={product.image || "imagePlaceholder.jpg"}
-              alt=""
-              width={"100%"}
-            />
-            <h2>{product.name}</h2>
-            <p className="product-description">
-              {product.description || "Cool product"}
-            </p>
-            <p className="price">${product.price}</p>
+            <Product key={product.id} product={product} />
           </div>
         ))}
       </main>
