@@ -13,6 +13,7 @@ import Product from "../components/Product";
 import User from "../components/User";
 import ErrorPage from "../ErrorPage";
 import { getProducts } from "./loaders/products";
+import { productAction } from "./actions/product";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,8 +21,8 @@ const router = createBrowserRouter(
       path="/"
       element={<App />}
       errorElement={<ErrorPage />}
-      loader={(async) =>
-        fetch("http://localhost:4001/login", {
+      loader={async () =>
+        await fetch("http://localhost:4001/login", {
           credentials: "include",
         })
       }
@@ -36,8 +37,9 @@ const router = createBrowserRouter(
           path="/products/:productId"
           element={<Product />}
           loader={async ({ params }) =>
-            fetch(`http://127.0.0.1:4001/products/${params.productId}`)
+            await fetch(`http://127.0.0.1:4001/products/${params.productId}`)
           }
+          action={productAction}
         />
         <Route path="/User" element={<User />} />
       </Route>

@@ -1,6 +1,15 @@
-import { useLoaderData } from "react-router-dom";
+import {
+  Form,
+  useLoaderData,
+  useNavigation,
+  useParams,
+} from "react-router-dom";
 
 const Product = ({ product = useLoaderData() }) => {
+  const { productId } = useParams();
+  const isProductPage = productId ? true : false;
+  const navigation = useNavigation();
+
   return (
     <>
       <img
@@ -14,6 +23,11 @@ const Product = ({ product = useLoaderData() }) => {
         {product.description || "Cool product"}
       </p>
       <p className="price">${product.price}</p>
+      {isProductPage && (
+        <Form method="POST">
+          <button disabled={navigation.state !== "idle"}>Add to Cart</button>
+        </Form>
+      )}
     </>
   );
 };
