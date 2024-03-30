@@ -68,16 +68,23 @@ module.exports = (app) => {
 
   // Add a product to cart
   router.post("/:itemId", isValidProduct, async (req, res) => {
+    const { itemId } = req.params;
     try {
-      const { itemId } = req.params;
+      // check if user has a cart
+      const cart = await loadCart(req.user.id);
+      if (!cart) {
+        const { user } = req;
+        const newCart = await createCart(user.id);
+        return res.status(201).send(await addToCart(newCart.id, itemId));
+      }
 
       // If item already exists in cart,
       // update qty instead of adding it again
-      const cart = await loadCart(req.user.id);
-      const hasItem = cart?.items?.find((item) => item.id == itemId);
-      if (hasItem) {
-        console.log(cart.items);
-        return res.send(await updateItem(req.cart.id, itemId, hasItem.qty + 1));
+      const foundItem = cart?.items?.find((item) => item.id == itemId);
+      if (foundItem) {
+        return res
+          .status(201)
+          .send(await updateItem(req.cart.id, itemId, foundItem.qty + 1));
       }
 
       const addedItem = await addToCart(req.cart.id, itemId);
