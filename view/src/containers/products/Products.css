@@ -1,12 +1,9 @@
 main.products-container {
-  display: flex;
-  max-width: 95vw;
-  margin-inline: auto;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 2rem;
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 }
 
 .product-card {
-  flex-basis: 20%;
+  min-height: 500px;
 }
