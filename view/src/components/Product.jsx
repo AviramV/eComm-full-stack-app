@@ -1,9 +1,9 @@
-import { useFetcher, useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
+import AddToCartButton from "./AddToCartButton";
 
 const Product = ({ product = useLoaderData() }) => {
   const { productId } = useParams();
   const isProductPage = productId ? true : false;
-  const fetcher = useFetcher();
 
   return (
     <>
@@ -18,11 +18,7 @@ const Product = ({ product = useLoaderData() }) => {
         {product.description || "Cool product"}
       </p>
       <p className="price">${product.price}</p>
-      {isProductPage && (
-        <fetcher.Form method="POST">
-          <button disabled={fetcher.state !== "idle"}>Add to Cart</button>
-        </fetcher.Form>
-      )}
+      {isProductPage && <AddToCartButton />}
     </>
   );
 };
