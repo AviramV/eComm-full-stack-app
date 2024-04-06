@@ -4,15 +4,12 @@ const { getProductById } = require("../../controller/productService");
 
 // Check if product exists in DB
 async function isValidProduct(req, res, next) {
-  try {
-    const { itemId } = req.params;
-    const { id } = req.user;
-    if (!(await getProductById(itemId))) throw Error("Item doesn't exist");
-    req.cart = await getCartByUserId(id);
-    next();
-  } catch (error) {
-    res.send(error.message);
-  }
+  const { itemId } = req.params;
+  const { id } = req.user;
+  if (!(await getProductById(itemId)))
+    return res.status(400).send({ message: "Item doesn't exist" });
+  req.cart = await getCartByUserId(id);
+  next();
 }
 
 async function isCartEmpty(req, res, next) {
