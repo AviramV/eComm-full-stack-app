@@ -16,7 +16,7 @@ async function isCartEmpty(req, res, next) {
   const { id } = req.user;
   const cart = await loadCart(id);
   if (!cart) return res.send("Cart doesn't exist");
-  if (!cart.items) return res.send("Cart is empty");
+  if (!cart.items) return res.send([]);
   req.cart = cart;
   next();
 }

@@ -95,9 +95,15 @@ module.exports = (app) => {
   });
   // Update product quantity in cart
   router.put("/:itemId", isValidProduct, async (req, res) => {
+    const { itemId } = req.params;
+    const { qty } = req.body;
+
+    if (!qty)
+      return res.status(400).send({
+        message: "Request body must include key 'qty' with a numeric value",
+      });
+
     try {
-      const { itemId } = req.params;
-      const { qty } = req.body;
       const updatedItem = await updateItem(req.cart.id, itemId, qty);
       res.send(updatedItem);
     } catch (error) {
@@ -106,10 +112,10 @@ module.exports = (app) => {
   });
   // Remove item from cart
   router.delete("/:itemId", isValidProduct, async (req, res) => {
+    const { itemId } = req.params;
     try {
-      const { itemId } = req.params;
       const removedItem = await removeItem(req.cart.id, itemId);
-      res.status(204); // Successfully removed item
+      res.status(204).send(); // Successfully removed item
     } catch (error) {
       res.send(error.message);
     }
